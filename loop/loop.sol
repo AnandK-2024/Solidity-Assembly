@@ -12,4 +12,18 @@ contract AssemblyLoop {
         }
         return sum;
     }
+
+
+    function loop1() public pure returns (uint sum ){
+        assembly {
+            for {let i:=0 } lt(i,10){i:=add(i,1)} {
+                sum:=add(sum,i)
+            
+        }
+        mstore(0x0,sum)
+        return(0x0, 32)
+        
+        
+           }  
+    } 
 }
