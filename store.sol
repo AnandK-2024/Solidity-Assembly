@@ -55,4 +55,20 @@ contract Box {
             return(0x80, 32)
         }
     }
+
+    
+    function add1(uint x, uint y ) public pure returns(uint){
+        return x+y;
+    }
+
+    function add(uint x, uint y) public pure returns(uint ){
+        assembly{
+            let result :=add(x,y)
+            mstore(0x0, result)
+            //return it we have to store it in memory.
+            return (0x0,32)
+
+        }
+    }
+
 }
