@@ -83,4 +83,17 @@ contract Assembly{
 
 
 
+    function addMultipleGuesses(address[] memory _users, uint[] memory _guesses) external returns(uint) {
+        assembly{
+            let userSize:=mload(_users)
+            let gussesSize:=mload(_guesses)
+            if iszero(eq(userSize,gussesSize)){
+                revert(0,0)
+            }
+            for {let i} lt(i,userSize){i:=add(i,1)}{
+                
+            }
+        }
+                }
+
 }
