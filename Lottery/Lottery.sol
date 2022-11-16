@@ -58,7 +58,7 @@ contract Assembly{
         }
     }
 
-    function addGuess(uint guess) external {
+    function addGuess(uint _guess) external {
         assembly{
             let ptr := mload(0x40)
            mstore(ptr, caller())
@@ -66,8 +66,19 @@ contract Assembly{
            let slot := keccak256(ptr, 0x40)
            sstore(slot, _guess)
         }
+    }
 
 
+    function hashSecretWord(string memory _str) external returns(bytes32) {
+        assembly{
+            let strSize:=mload(_str)
+            // mstore(0x40,strSize)
+            let strAdd:=add(strSize,32)
+            let hash:=keccak256(strAdd,strSize)
+            mstore(0x00,hash)
+            sstore(SecretWord.slot,hash)
+            return(0x00,32)
+        }
     }
 
 
