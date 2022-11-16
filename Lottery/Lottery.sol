@@ -60,10 +60,11 @@ contract Assembly{
 
     function addGuess(uint guess) external {
         assembly{
-            
-
-
-
+            let ptr := mload(0x40)
+           mstore(ptr, caller())
+           mstore(add(ptr, 0x20), guesses.slot)
+           let slot := keccak256(ptr, 0x40)
+           sstore(slot, _guess)
         }
 
 
