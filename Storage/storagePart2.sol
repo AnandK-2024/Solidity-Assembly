@@ -1,19 +1,23 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
-
- contract ComplexStorage{
+contract ComplexStorage{
     uint256 [3] public fixedArray;
     uint256 [] public bigArray;
     uint64 [] public smallArray;
 
     mapping(uint256=>uint256) public Mymapping;
-    mapping(uint256=>mapping (uint256=>uint256)) public nestedMapping;
+    mapping(uint256=>mapping (address=>uint256)) public nestedMapping;
     mapping(address=>uint256[]) public AddressToList;
 
    constructor(){
        fixedArray=[2,67,80];
        bigArray=[1,2,3,5,5,6,7,8];
        smallArray=[9,8,7,6,8];
+       Mymapping[12]=2024;
+       Mymapping[20]=2020;
+       nestedMapping[2][0x5B38Da6a701c568545dCfcB03FcB875f56beddC4]=100;
+       nestedMapping[5][0x5B38Da6a701c568545dCfcB03FcB875f56beddC4]=35000;
+       AddressToList[0x5B38Da6a701c568545dCfcB03FcB875f56beddC4]=[1,2,3,45,6];
    }
 
 
@@ -48,6 +52,27 @@ pragma solidity ^0.8.0;
         
     } 
 
+    function slotView(uint _slot) public view returns(bytes32 value){
+        assembly{
+            value:=sload(_slot)
+
+        }
+    }
+
+    function setslot(uint _slot, uint _value) public {
+        assembly{
+
+            sstore(_slot, _value)
+        }
+    }
+
+    function mappingSlot() public pure returns(uint256 Slot){
+        assembly{
+            Slot:=nestedMapping.slot
+        }
+    }
+
+
     function ViewMymapping(uint key) public view returns(bytes32 location,uint value){
         uint Slot;
         assembly{
@@ -70,14 +95,17 @@ pragma solidity ^0.8.0;
         }
     }
 
-
-    function slotView(uint _slot) public view returns(bytes32 value){
+    function viewAddressToList(address key,uint256 index) public view returns(bytes32 location, uint256 value){
+        uint256 MapSlot;
         assembly{
-            value:=sload(_slot)
+            MapSlot:=AddressToList.slot
+        }
+        bytes32 araySlot=keccak256(abi.encode(address(key),MapSlot));
+        location=keccak256(abi.encode(uint256(araySlot)));
+        assembly{
+            value:=sload(add(location,index))
+        }
+
 
         }
     }
- 
-
-
-}
