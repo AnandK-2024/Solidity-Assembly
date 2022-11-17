@@ -48,6 +48,29 @@ pragma solidity ^0.8.0;
         
     } 
 
+    function ViewMymapping(uint key) public view returns(bytes32 location,uint value){
+        uint Slot;
+        assembly{
+            Slot:=Mymapping.slot
+        }
+        location=keccak256(abi.encode(key,uint256(Slot)));
+        assembly{
+            value:=sload(location)
+        }
+    }
+
+    function ViewNestedmapp(uint key1, address key2) public view returns(bytes32 location,uint256 value){
+        uint256 Slot;
+        assembly{
+            Slot:=nestedMapping.slot
+        }
+        location= keccak256(abi.encode(address(key2),keccak256(abi.encode(uint256(key1),Slot))));
+        assembly{
+            value:=sload(location)
+        }
+    }
+
+
     function slotView(uint _slot) public view returns(bytes32 value){
         assembly{
             value:=sload(_slot)
