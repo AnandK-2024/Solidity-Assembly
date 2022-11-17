@@ -85,7 +85,7 @@ contract Memory{
 
 
 
-    function Viewarray(uint256[] memory arr) public pure returns(bytes32 location,
+    function Viewarray(uint256[] memory arr) public pure returns(bytes32 ),
         bytes32 len,
         bytes32 ivalue1,
         bytes32 ivalue21) {
@@ -97,9 +97,19 @@ contract Memory{
             location:=arr
             len:=mload(arr)
             ivalue1:=mload(add(arr,0x20))
-            ivalue1:=mload(add(arr,0x40))
+           ivalue1:=mload(add(arr,0x40))
         }
     }
+
+    function breakfreememPointer(uint[1] memory arr) public returns(uint256){
+        assembly{
+        mstore(0x40,0x80)
+        }
+        uint256[2] memory array=[uint256(2),uint256(3)];
+        return arr[0];
+
+    }
+
 
 
 
