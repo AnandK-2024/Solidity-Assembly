@@ -111,6 +111,13 @@ contract Memory{
     }
 
 
+    uint8[] StorageArray=[1,2,4,5,6,7,8];
+    function UnpackedMem() public {
+        uint8[] memory array=StorageArray;
+
+    }
+
+
 
 
 }
