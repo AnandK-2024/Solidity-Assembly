@@ -9,6 +9,13 @@ contract ComplexStorage{
     mapping(uint256=>mapping (address=>uint256)) public nestedMapping;
     mapping(address=>uint256[]) public AddressToList;
 
+    struct Map{
+        address owner;
+        string name;   
+        uint256 Age;
+    }
+    mapping(address=>Map) public Details;
+
    constructor(){
        fixedArray=[2,67,80];
        bigArray=[1,2,3,5,5,6,7,8];
@@ -18,6 +25,8 @@ contract ComplexStorage{
        nestedMapping[2][0x5B38Da6a701c568545dCfcB03FcB875f56beddC4]=100;
        nestedMapping[5][0x5B38Da6a701c568545dCfcB03FcB875f56beddC4]=35000;
        AddressToList[0x5B38Da6a701c568545dCfcB03FcB875f56beddC4]=[1,2,3,45,6];
+        Details[0x617F2E2fD72FD9D5503197092aC168c91465E7f2]=Map(0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2,"AnandKumarRajSINGH",15);
+
    }
 
 
@@ -105,6 +114,24 @@ contract ComplexStorage{
         assembly{
             value:=sload(add(location,index))
         }
+
+
+        }
+
+
+
+        function ViewDetails(address key) public view returns(bytes32 location, address owner/*string memory name,uint Age*/){
+            bytes32 Slot;
+            assembly{
+                Slot:=Details.slot
+            }
+            location=keccak256(abi.encode(address(key),uint256(Slot)));
+            assembly{
+                owner:=sload(location)
+                // name:=sload(add(location,1))
+                // Age:=sload(add(location,2))
+            }
+
 
 
         }
