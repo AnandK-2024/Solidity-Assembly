@@ -78,9 +78,31 @@ function getmultiply(address contractadd, uint val1, uint val2) public view retu
             }
             returndatacopy(0,0,returndatasize())
             result:=mload(0x00)
+            // result:=mload(returndatasize())
 
     }
     }
+
+
+    function withdraw1()public  {
+        // payable(msg.sender).transfer(address(this).balance);
+        // (bool success,)=payable(msg.sender).call{gas:2300,value:address(this).balance}("");
+
+        (bool success,)=payable(msg.sender).call{value:address(this).balance}("");
+        require(success);
+
+    }
+
+
+    function withdraw2()public  {
+        assembly{
+            // let success:=call(2300,caller(),selfbalance(),0,0,0,0) // transfer method
+            let success:=call(gas(),caller(),selfbalance(),0,0,0,0)
+            if iszero(success){revert(0,0)}
+        }
+
+    }
+
 
 
 
