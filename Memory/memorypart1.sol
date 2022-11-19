@@ -85,10 +85,10 @@ contract Memory{
 
 
 
-    function Viewarray(uint256[] memory arr) public pure returns(bytes32 ),
-        bytes32 len,
-        bytes32 ivalue1,
-        bytes32 ivalue21) {
+    function Viewarray(uint256[] memory arr) public pure returns(bytes32 ){
+        // bytes32 len;
+        // bytes32 ivalue1;
+        // bytes32 ivalue21;
         bytes32 location;
         bytes32 len;
         bytes32 ivalue1;
