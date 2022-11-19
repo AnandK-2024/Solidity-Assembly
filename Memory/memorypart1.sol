@@ -115,7 +115,27 @@ contract Memory{
     function UnpackedMem() public {
         uint8[] memory array=StorageArray;
 
+
     }
+
+
+    function returnmultivalue(uint256 val1, uint256 val2, string memory val3) public pure returns(uint ,uint , string memory){
+        assembly{
+            let ptr:=mload(0x40)
+            mstore(ptr,val1)
+            mstore(add(ptr,32),val2)
+            mstore(add(ptr,64),val3)
+            return(ptr,add(ptr,64))
+
+        }
+    }
+    
+    function Revert() public {
+   assembly{ if eq(caller(),0x5B38Da6a701c568545dCfcB03FcB875f56beddC4){
+                mstore(0x00,"function revert not excute")
+                revert(0x00,0x20)
+    }}
+}
 
 
 
