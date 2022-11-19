@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 contract Memory{
+    uint256 public value;
     struct Point{
         uint256 x;
         uint256 y;
@@ -136,6 +137,24 @@ contract Memory{
                 revert(0x00,0x20)
     }}
 }
+
+
+function get1() external returns(uint256){
+    // value=32;
+    return 32;
+}
+
+function get2() external returns(uint256, uint256){
+    // value=23;
+    return (23,45);
+}
+
+
+function multiply(uint val1,uint val2) external returns(uint256){
+    value=val1*val2;
+    return value;
+}
+
 
 
 
