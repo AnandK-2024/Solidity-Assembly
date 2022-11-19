@@ -4,8 +4,6 @@ pragma solidity ^0.8.0;
 contract ExternalCall{
 
 
-    ///////////////////////////////////call memorypart1.sol contract///////////////////////////////////////////
-
     // "165c4a16": "multiply(uint256,uint256)",
     // "054c1a75": "get1()",
     // "d2178b08": "get2()",
@@ -64,6 +62,26 @@ function getmultiply(address contractadd, uint val1, uint val2) public view retu
 
     }
     }
+
+
+// when you don't known the size of return data
+    function UnknownreturnSize(address contractadd, uint val1, uint val2) public returns(uint result) {
+        assembly{
+            let ptr:=mload(0x40)
+            mstore(ptr,0x165c4a16)
+            mstore(add(ptr,32), val1)
+            mstore(add(ptr,64), val2)
+            mstore(0x40,add(ptr,0x60))
+            let success:=call(gas(),contractadd,callvalue(),add(0x80,28),mload(0x40),0x00,0x00)
+            if iszero(success){
+                revert(0,0)
+            }
+            returndatacopy(0,0,returndatasize())
+            result:=mload(0x00)
+
+    }
+    }
+
 
 
 }
